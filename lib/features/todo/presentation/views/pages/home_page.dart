@@ -36,11 +36,10 @@ class HomePage extends HookConsumerWidget {
             ? const Center(child: Text('할 일이 없습니다'))
             : ListView.separated(
                 controller: scrollController,
-                itemCount: items.length + 1, // +1 for loading indicator
+                itemCount: items.length + 1,
                 separatorBuilder: (_, __) => const Divider(height: 1),
                 itemBuilder: (_, i) {
                   if (i == items.length) {
-                    // Loading indicator at bottom
                     return const Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Center(child: CircularProgressIndicator()),

@@ -20,11 +20,8 @@ class ToDoRepositoryMemory implements ToDoRepository {
 
   @override
   Future<List<ToDo>> fetch({int limit = 15, ToDo? startAfter}) async {
-    // Simulate network delay
     await Future.delayed(const Duration(milliseconds: 500));
 
-    // Sort by createdAt descending (nulls last or first? usually new items have createdAt)
-    // For this mock, let's assume all have createdAt or we treat null as old.
     _items.sort((a, b) {
       if (a.createdAt == null && b.createdAt == null) return 0;
       if (a.createdAt == null) return 1;
@@ -54,7 +51,7 @@ class ToDoRepositoryMemory implements ToDoRepository {
       description: description,
       createdAt: DateTime.now(),
     );
-    _items.insert(0, todo); // Insert at beginning for "latest"
+    _items.insert(0, todo);
     _ctrl.add(_items);
     return todo;
   }

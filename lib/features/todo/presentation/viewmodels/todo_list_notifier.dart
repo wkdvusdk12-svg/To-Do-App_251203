@@ -56,7 +56,6 @@ class ToDoListNotifier extends StateNotifier<List<ToDo>> {
   }
 
   Future<void> add(String title, {String? description}) async {
-    // Optimistic update
     final tempId = 'temp_${DateTime.now().millisecondsSinceEpoch}';
     final tempTodo = ToDo(
       id: tempId,
@@ -65,17 +64,15 @@ class ToDoListNotifier extends StateNotifier<List<ToDo>> {
       createdAt: DateTime.now(),
     );
     final previousState = state;
-    state = [tempTodo, ...state]; // Add to top
+    state = [tempTodo, ...state];
 
     try {
       final newTodo = await _repo.create(title: title, description: description);
-      // Replace temp with real
       state = [
         for (final t in state)
           if (t.id == tempId) newTodo else t
       ];
     } catch (e) {
-      // Revert state on error
       state = previousState;
       rethrow;
     }
